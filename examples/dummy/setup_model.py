@@ -18,7 +18,7 @@ class Net(torch.nn.Module):
         #x2d, x3d = x[0], x[1]
         y = torch.zeros((x3d.shape[0], x3d.shape[1], self.num_out_3d), dtype=torch.float32)
         y[...,0] = torch.sum(x3d, -1)
-        y[...,1] = torch.tile(torch.sum(x3d[:,:,0], 1, True), (1, x3d.shape[1],))
+        y[...,1] = torch.tile(torch.sum(x3d[:,:,1], 1, True), (1, x3d.shape[1],))
         y[...,2] = x3d[...,0]
         y[...,3] = torch.tile(x2d[...,3:4], (1,x3d.shape[1]))
         return y

@@ -37,8 +37,8 @@ program dummy
     type(torch_tensor_wrap) :: input_tensors
     type(torch_tensor) :: out_tensor
 
-    real(real32) :: x2d(minibatch, num_var_2d)
-    real(real32) :: x3d(minibatch, len_height, num_var_3d)
+    real(real32) :: x2d(num_var_2d, minibatch)
+    real(real32) :: x3d(len_height, num_var_3d, minibatch)
 
     real(real32), pointer :: y3d(:, :, :)
 
@@ -56,12 +56,12 @@ program dummy
 
     ! Filling x2d with ascending integer numbers
     do n = 1, num_var_2d
-        x2d(:, n) = n
+        x2d(n, :) = n
     end do
 
     ! Filling x3d with ascending integer numbers
     do n = 1, num_var_3d
-        x3d(:, :, n) = n
+        x3d(n, :, :) = n
     end do
 
     call input_tensors%create
