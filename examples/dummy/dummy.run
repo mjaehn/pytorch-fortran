@@ -1,0 +1,10 @@
+#! /bin/bash
+#SBATCH --constraint=gpu 
+#SBATCH --account=s83
+#SBATCH --job-name=dummy
+#SBATCH --output=/scratch/e1000/meteoswiss/scratch/mjaehn/Tasks/ML-RAD/pytorch-fortran/examples/dummy/LOG.dummy.run.%j.o
+#SBATCH --error=/scratch/e1000/meteoswiss/scratch/mjaehn/Tasks/ML-RAD/pytorch-fortran/examples/dummy/LOG.dummy.run.%j.o
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=4 
+
+srun ./dummy dummy_torch_model.pt

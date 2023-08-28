@@ -21,6 +21,6 @@
 
 cmake_minimum_required(VERSION 3.13)
 
-add_executable(resnet_forward resnet_forward.f90)
-target_link_libraries(resnet_forward pytorch_fort_proxy pytorch_proxy)
-install(TARGETS resnet_forward)
+add_executable(dummy dummy.f90)
+target_link_libraries(dummy pytorch_fort_proxy pytorch_proxy)
+install(TARGETS dummy)
