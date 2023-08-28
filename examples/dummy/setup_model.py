@@ -14,8 +14,8 @@ class Net(torch.nn.Module):
     def __init__(self, num_out_3d):
         super().__init__()
         self.num_out_3d = num_out_3d
-    def forward(self, x):
-        x2d, x3d = x[0], x[1]
+    def forward(self, x2d, x3d):
+        #x2d, x3d = x[0], x[1]
         y = torch.zeros((x3d.shape[0], x3d.shape[1], self.num_out_3d), dtype=torch.float32)
         y[...,0] = torch.sum(x3d, -1)
         y[...,1] = torch.tile(torch.sum(x3d[:,:,1], 1, True), (1, x3d.shape[1],))
