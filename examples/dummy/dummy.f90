@@ -25,36 +25,25 @@ program dummy
 
     implicit none
 
-    integer, parameter :: rows = 3
-    integer, parameter :: cols = 4
-    integer, parameter :: depth = 2
+    integer, parameter :: num_var_2d   = 8
+    integer, parameter :: num_var_3d   = 6
+    integer, parameter :: feats_out_3d = 4
+    integer, parameter :: len_height   = 70 ! number of vertical levels
+    integer, parameter :: minibatch    = 1  ! number of simultaneous samples
+                                            ! to make inference for
 
     integer :: n
     type(torch_module) :: torch_mod
     type(torch_tensor_wrap) :: input_tensors
     type(torch_tensor) :: out_tensor
 
-    real(real32) :: x2d(rows, cols)
-    real(real32) :: x3d(rows, cols, depth)
+    real(real32) :: x2d(minibatch, num_var_2d)
+    real(real32) :: x3d(minibatch, len_height, num_var_3d)
 
     real(real32), pointer :: y3d(:, :, :)
 
     character(:), allocatable :: filename
     integer :: arglen, stat
-
-    ! Hardcoded values for 2D array
-    data x2d /  1.0,  2.0,  3.0,  4.0, &
-                   5.0,  6.0,  7.0,  8.0, &
-                   9.0, 10.0, 11.0, 12.0 /
-    
-    ! Hardcoded values for 3D array
-    data x3d /  1.0,  2.0,  3.0,  4.0, &
-                   5.0,  6.0,  7.0,  8.0, &
-                   9.0, 10.0, 11.0, 12.0, &
-                  13.0, 14.0, 15.0, 16.0, &
-                  17.0, 18.0, 19.0, 20.0, &
-                  21.0, 22.0, 23.0, 24.0 /
-    
 
     if (command_argument_count() /= 1) then
         print *, "Need to pass a single argument: Pytorch model file name"
@@ -64,6 +53,16 @@ program dummy
     call get_command_argument(number=1, length=arglen)
     allocate(character(arglen) :: filename)
     call get_command_argument(number=1, value=filename, status=stat)
+
+    ! Filling x2d with ascending integer numbers
+    do n = 1, num_var_2d
+        x2d(:, n) = n
+    end do
+
+    ! Filling x3d with ascending integer numbers
+    do n = 1, num_var_3d
+        x3d(:, :, n) = n
+    end do
 
     call input_tensors%create
     call input_tensors%add_array(x2d)
